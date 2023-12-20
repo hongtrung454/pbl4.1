@@ -4,14 +4,19 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/laptrinhmang2411/FileSync_Client/src/model/file.java</file>
-            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/model/RequestType.java</file>
             <file>file:/D:/laptrinhmang2411/FileSync_Client/src/model/machine.java</file>
-            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/model/syncjob.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/controller/machine_controller.java</file>
             <file>file:/D:/laptrinhmang2411/FileSync_Client/src/model/synclog.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/model/Sendable.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/controller/file_request_controller.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/model/RequestType.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/view/LoginForm.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/controller/account_controller.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/model/syncjob.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/controller/ConnectionManager.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/controller/GetDeviceFingerprint.java</file>
             <file>file:/D:/laptrinhmang2411/FileSync_Client/src/filesync_client/FileSync_Client.java</file>
-            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/filesync_client/ConnectionManager.java</file>
-            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/filesync_client/ClientMainForm.java</file>
-            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/filesync_client/LoginForm.java</file>
+            <file>file:/D:/laptrinhmang2411/FileSync_Client/src/view/ClientMainForm.java</file>
             <file>file:/D:/laptrinhmang2411/FileSync_Client/src/model/account.java</file>
         </group>
     </open-files>

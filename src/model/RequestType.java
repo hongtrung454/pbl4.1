@@ -12,4 +12,8 @@ public enum RequestType {
     LOGIN,
     REGISTER,
     GET_USER_INFO,
+    CHECK_FINGERPRINT,
+    INSERT_DEVICE,
+    GET_ALL_FILES,
+    
 }

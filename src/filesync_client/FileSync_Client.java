@@ -4,6 +4,8 @@
  */
 package filesync_client;
 
+import controller.GetDeviceFingerprint;
+
 /**
  *
  * @author DELL

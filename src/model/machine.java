@@ -14,6 +14,11 @@ public class machine {
     private boolean is_active;
     private String folder_path;
 
+    @Override
+    public String toString() {
+        return "machine{" + "device_fingerprint=" + device_fingerprint + ", machine_name=" + machine_name + ", is_active=" + is_active + ", folder_path=" + folder_path + ", requestType=" + requestType + '}';
+    }
+
     public machine(String device_fingerprint, String machine_name, boolean is_active, String folder_path, RequestType requestType) {
         this.device_fingerprint = device_fingerprint;
         this.machine_name = machine_name;
