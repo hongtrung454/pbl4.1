@@ -19,13 +19,13 @@ public class file_request_controller implements Sendable{
     private account user1;
     private machine machine1;
 
-    public file_request_controller(account user1, machine machine1) {
+    public file_request_controller(account user1) {
         this.user1 = user1;
-        this.machine1 = machine1;
+//        this.machine1 = machine1;
     }
     public void setRequestType(RequestType t){
         user1.setRequestType(t);
-        machine1.setRequestType(t);
+//        machine1.setRequestType(t);
     }
     public account getUser1() {
         return user1;
@@ -51,7 +51,7 @@ public class file_request_controller implements Sendable{
             JsonObject jsonObject = new JsonObject();
 
             jsonObject.add("account", gson.toJsonTree(user1));
-            jsonObject.add("machine", gson.toJsonTree(machine1));
+//            jsonObject.add("machine", gson.toJsonTree(machine1));
 
             jsonData = gson.toJson(jsonObject);
 

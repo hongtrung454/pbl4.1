@@ -35,7 +35,6 @@ public class GetDeviceFingerprint {
         try {
             InetAddress localHost = InetAddress.getLocalHost();
             fingerprintBuilder.append("Hostname: ").append(localHost.getHostName()).append("; ");
-
             NetworkInterface networkInterface = NetworkInterface.getByInetAddress(localHost);
             byte[] mac = networkInterface.getHardwareAddress();
             fingerprintBuilder.append("MAC Address: ").append(getHexString(mac)).append("; ");
@@ -61,8 +60,6 @@ public class GetDeviceFingerprint {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = md.digest(input.getBytes());
-
-            // Convert the byte array to a hexadecimal string
             StringBuilder hexString = new StringBuilder();
             for (byte b : hashBytes) {
                 hexString.append(String.format("%02X", b));

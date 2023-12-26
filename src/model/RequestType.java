@@ -15,5 +15,8 @@ public enum RequestType {
     CHECK_FINGERPRINT,
     INSERT_DEVICE,
     GET_ALL_FILES,
+    LOG_OUT,
+    DOWNLOAD,
+    
     
 }

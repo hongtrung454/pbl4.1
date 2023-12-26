@@ -116,32 +116,34 @@ public class LoginForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private account user1;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
             
-            account user1 = new account( jTextField1.getText(), jPasswordField1.getText(), RequestType.LOGIN);
+             user1 = new account( jTextField1.getText(), jPasswordField1.getText(), RequestType.LOGIN);
 //            System.out.println(user1.getUsername());
 //            System.out.println(user1.getPassword());
+            user1.setIs_active(true);
             Gson gson = new Gson();
             String jsonData = gson.toJson(user1);
             System.out.println(jsonData + "666666");
 //            ConnectionManager.getInstance().outputStream.write(jsonData.getBytes());
             account_controller user_controller = new account_controller(user1);
             ConnectionManager.getInstance().startRequest(user_controller);
-            final Timer timer = new Timer(1000, null);
+            final Timer timer = new Timer(1500, null);
             timer.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if(ConnectionManager.getInstance().loginStatus)
                     {
                         
-                        machine machine1 = new machine();
-                        machine1.setDevice_fingerprint(GetDeviceFingerprint.getFingerPrint());
-                        machine1.setIs_active(true);
-                        machine1.setRequestType(RequestType.CHECK_FINGERPRINT);
-                        machine_controller machine1_controller = new machine_controller(machine1);
-                        checkFingerprint(machine1_controller, user1);
+//                        machine machine1 = new machine();
+//                        machine1.setDevice_fingerprint(GetDeviceFingerprint.getFingerPrint());
+//                        machine1.setIs_active(true);
+//                        machine1.setRequestType(RequestType.CHECK_FINGERPRINT);
+//                        machine_controller machine1_controller = new machine_controller(machine1);
+//                        checkFingerprint(machine1_controller, user1);
+                        getFolderPath( user1);
                         timer.stop();
                     }
                     else {        
@@ -158,34 +160,40 @@ public class LoginForm extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-    private void checkFingerprint(machine_controller machine1_controller, account user1) {
+//    private void checkFingerprint(machine_controller machine1_controller, account user1) {
+//        JOptionPane.showMessageDialog(null, "Đăng nhập thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+//        this.hide();
+//        ConnectionManager.getInstance().startRequest(machine1_controller);
+//        final Timer timer = new Timer(2000, null);
+//        timer.addActionListener(new ActionListener() {
+//           public void actionPerformed(ActionEvent e) {
+//                if (ConnectionManager.getInstance().deviceFingerprint){
+//                    // mở luôn form chính, nhớ truyền objects account với machine vào đây
+//                    System.out.println("may da duoc dang ky");
+//                    timer.stop();
+//                    // đây là hàm để mà kiểu, xử lý nếu mà máy ni đã từng kết nối rồi, với có đường dẫn sẵn rồi, thì t chỉ 
+//                    // đọc thay đổi trên server xong load về thôi
+//                    // chơ k cần chọn đường dẫn folder nữa//
+//                    
+//                    // đều t chưa làm chi cả =))
+//                    
+//                }
+//                else {
+//                    getFolderPath(machine1_controller, user1);
+//                    timer.stop();
+//                }
+//            } 
+//        });
+//        
+//            
+//        timer.start();
+//        
+//    }
+    private void getFolderPath( account user1) {
+        boolean selectedEmptyDirectory = false;
         JOptionPane.showMessageDialog(null, "Đăng nhập thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         this.hide();
-        ConnectionManager.getInstance().startRequest(machine1_controller);
-        final Timer timer = new Timer(2000, null);
-        timer.addActionListener(new ActionListener() {
-           public void actionPerformed(ActionEvent e) {
-                if (ConnectionManager.getInstance().deviceFingerprint){
-                    // mở luôn form chính, nhớ truyền objects account với machine vào đây
-                    System.out.println("may da duoc dang ky");
-                    timer.stop();
-
-                }
-                else {
-                    getFolderPath(machine1_controller, user1);
-                    timer.stop();
-                }
-            } 
-        });
-        
-            
-        timer.start();
-        
-    }
-    private void getFolderPath(machine_controller machine1_controller, account user1) {
-        boolean selectedEmptyDirectory = false;
-        
-        JOptionPane.showMessageDialog(null, "Thiết bị lần đầu đăng nhập, vui lòng chọn đường dẫn đến thư mục muốn đồng bộ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Vui lòng chọn đường dẫn đến thư mục muốn đồng bộ", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 
         while (!selectedEmptyDirectory) {
 
@@ -200,27 +208,28 @@ public class LoginForm extends javax.swing.JFrame {
                 if (isEmptyDirectory(selectedDirectory)) {
                     String path = selectedDirectory.getAbsolutePath();
                     System.out.println(path);
-                    String userInput = JOptionPane.showInputDialog(null, "Nhập vào tên máy:", "Nhập dữ liệu", JOptionPane.QUESTION_MESSAGE);
-
-                    // Kiểm tra xem người dùng đã nhập hay chưa
-                    if (userInput != null && !userInput.isEmpty()) {
-                        // Người dùng đã nhập một chuỗi
-                        System.out.println("Bạn đã nhập: " + userInput);
-                    } else {
-                        // Người dùng có thể đã hủy hoặc không nhập gì cả
-                        System.out.println("Bạn đã hủy hoặc không nhập gì cả.");
-                    }
-                    machine _machine = machine1_controller.getMachine1();
-                    _machine.setFolder_path(path);
-                    //truyen path cho chuong trinh client
                     ConnectionManager.getInstance().path = path;
-                    _machine.setMachine_name(userInput);
-                    _machine.setRequestType(RequestType.INSERT_DEVICE);
-                    machine1_controller.setMachine1(_machine);
-                    ConnectionManager.getInstance().startRequest(machine1_controller);
-                    ClientMainForm  f1 = new ClientMainForm(_machine, user1);
+//                    String userInput = JOptionPane.showInputDialog(null, "Nhập vào tên máy:", "Nhập dữ liệu", JOptionPane.QUESTION_MESSAGE);
+//
+//                    // Kiểm tra xem người dùng đã nhập hay chưa
+//                    if (userInput != null && !userInput.isEmpty()) {
+//                        // Người dùng đã nhập một chuỗi
+//                        System.out.println("Bạn đã nhập: " + userInput);
+//                    } else {
+//                        // Người dùng có thể đã hủy hoặc không nhập gì cả
+//                        System.out.println("Bạn đã hủy hoặc không nhập gì cả.");
+//                    }
+//                    machine _machine = machine1_controller.getMachine1();
+//                    _machine.setFolder_path(path);
+//                    //truyen path cho chuong trinh client
+//                    ConnectionManager.getInstance().path = path;
+//                    _machine.setMachine_name(userInput);
+//                    _machine.setRequestType(RequestType.INSERT_DEVICE);
+//                    machine1_controller.setMachine1(_machine);
+//                    ConnectionManager.getInstance().startRequest(machine1_controller);
+                    ClientMainForm  f1 = new ClientMainForm(path, user1);
                     f1.show();
-                    System.out.println(_machine.toString());
+//                    System.out.println(_machine.toString());
                     
                     // Đánh dấu là đã chọn thư mục rỗng và thoát khỏi vòng lặp
                     selectedEmptyDirectory = true;
@@ -228,6 +237,11 @@ public class LoginForm extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn một thư mục rỗng.", "Thông báo", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
+                 user1.setIs_active(false);
+                account_controller logOutRequest = new account_controller(user1);
+                logOutRequest.setRequestType(RequestType.LOG_OUT);
+                ConnectionManager.getInstance().startRequest(logOutRequest);
+                
                 // Người dùng đã hủy chọn thư mục, có thể xử lý tùy ý
                 break;
             }

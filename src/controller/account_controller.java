@@ -5,6 +5,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import model.RequestType;
 import model.Sendable;
 import model.account;
 
@@ -17,7 +18,9 @@ public class account_controller  implements Sendable{
 
     public account_controller() {
     }
-
+    public void setRequestType(RequestType t){
+        user1.setRequestType(t);
+    }
     public account_controller(account user1) {
         this.user1 = user1;
     }
