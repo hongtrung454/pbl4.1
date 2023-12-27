@@ -4,7 +4,8 @@
  */
 package filesync_client;
 
-import controller.GetDeviceFingerprint;
+import view.LoginForm;
+
 
 /**
  *
@@ -17,9 +18,14 @@ public class FileSync_Client {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        try {
+            LoginForm f = new LoginForm();
+            f.show();
+        } catch (Exception e) {
+        }
+
         
-           String n1=     GetDeviceFingerprint.getFingerPrint();
-           if(n1.equals(GetDeviceFingerprint.getFingerPrint())) System.out.println("true");
+         
     }
     
 }

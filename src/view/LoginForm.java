@@ -5,7 +5,6 @@
 package view;
 import com.google.gson.Gson;
 import controller.ConnectionManager;
-import controller.GetDeviceFingerprint;
 import controller.account_controller;
 import controller.machine_controller;
 import java.awt.AWTEventMulticaster;
@@ -21,6 +20,7 @@ import javax.net.ssl.SSLSocket;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 import model.RequestType;
 import model.account;
 import model.machine;
@@ -35,9 +35,14 @@ public class LoginForm extends javax.swing.JFrame {
      * Creates new form LoginForm
      */
     public LoginForm() throws IOException {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+        } catch (Exception e) {
+        }
         initComponents();
 //        Socket socket1 = new Socket("localhost", 8000);
-
+        this.setLocationRelativeTo(null);
         ConnectionManager.getInstance().getConnection();
         ConnectionManager.getInstance().startListening();
 
@@ -73,6 +78,11 @@ public class LoginForm extends javax.swing.JFrame {
         });
 
         jButton2.setText("Sign up");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -121,7 +131,7 @@ public class LoginForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             
-             user1 = new account( jTextField1.getText(), jPasswordField1.getText(), RequestType.LOGIN);
+             user1 = new account( jTextField1.getText().trim(), jPasswordField1.getText(), RequestType.LOGIN);
 //            System.out.println(user1.getUsername());
 //            System.out.println(user1.getPassword());
             user1.setIs_active(true);
@@ -136,13 +146,6 @@ public class LoginForm extends javax.swing.JFrame {
                 public void actionPerformed(ActionEvent e) {
                     if(ConnectionManager.getInstance().loginStatus)
                     {
-                        
-//                        machine machine1 = new machine();
-//                        machine1.setDevice_fingerprint(GetDeviceFingerprint.getFingerPrint());
-//                        machine1.setIs_active(true);
-//                        machine1.setRequestType(RequestType.CHECK_FINGERPRINT);
-//                        machine_controller machine1_controller = new machine_controller(machine1);
-//                        checkFingerprint(machine1_controller, user1);
                         getFolderPath( user1);
                         timer.stop();
                     }
@@ -160,6 +163,11 @@ public class LoginForm extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        RegisterForm rForm = new RegisterForm();
+        rForm.show();
+    }//GEN-LAST:event_jButton2ActionPerformed
 //    private void checkFingerprint(machine_controller machine1_controller, account user1) {
 //        JOptionPane.showMessageDialog(null, "Đăng nhập thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 //        this.hide();

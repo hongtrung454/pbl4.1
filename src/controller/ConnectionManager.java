@@ -20,11 +20,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.RequestType;
 import model.Sendable;
 
@@ -41,6 +43,7 @@ public class ConnectionManager {
     public DataInputStream inputStream;
     public DataOutputStream outputStream;
     public boolean loginStatus = false;
+    public boolean RegisterStatus = false;
 //    public boolean deviceFingerprint = false;
     public String path = "";
     private ConnectionManager() {
@@ -85,8 +88,8 @@ public class ConnectionManager {
                     if (serverResponse.startsWith("Login")) {
                         loginStatus = handleReceivedLoginData(serverResponse);
 
-                    } else if (serverResponse.startsWith("Fingerprint")) {
-//                        deviceFingerprint = handleReceivedFingerprintData(serverResponse);
+                    } else if(serverResponse.startsWith("Register")) {
+                        RegisterStatus = (serverResponse.equals("Register successful") ? true : false);
                     } else if (serverResponse.contains("GET_ALL_FILES_RESPONSE")) {
                         System.out.println("server response: " + serverResponse);
                         handleGetAllFilesResponse(serverResponse);
@@ -101,7 +104,9 @@ public class ConnectionManager {
                         System.out.println(serverResponse);
                     } else if (serverResponse.contains("SEND_MARKED_FILES_FROM_SERVER")) {
                         handleReceiveMarkedFilesFromServer(serverResponse);
-                    }
+                    } else if (serverResponse.contains("REQUEST_FILE_INFO")) {
+                        startRequest(1);
+                    } 
 
                 }
                 //System.out.println("Server response: " + serverResponse);
@@ -124,7 +129,8 @@ public class ConnectionManager {
 
             String dataToSend = prepareDataToSend(sendable);
             System.out.println(dataToSend + "11111");
-
+            int dataLength = dataToSend.getBytes().length;
+            outputStream.writeInt(dataLength);
             outputStream.write(dataToSend.getBytes());
             outputStream.flush();
 
@@ -145,12 +151,17 @@ public class ConnectionManager {
             //gửi file
             File directory = new File(path);
             File[] files = directory.listFiles();
-            
+
             //tao doi tuong JSON de bieu dien list cac tap tin
             JsonObject jsonFiles = new JsonObject();
-            jsonFiles.addProperty("requestType", "SEND_FILES_FROM_CLIENT");
+            if (i == 1) {
+                jsonFiles.addProperty("requestType", "SEND_FILES_INFO_FROM_CLIENT");
+
+            } else {
+                jsonFiles.addProperty("requestType", "SEND_FILES_FROM_CLIENT");
+            }
             jsonFiles.addProperty("fileCount", files.length);
-            
+
             // tao mot array luu thong tin cho moi file
             JsonArray filesArray = new JsonArray();
             for (File file: files) {
@@ -165,9 +176,17 @@ public class ConnectionManager {
             jsonFiles.add("files", filesArray);
             
             String jsonData = new Gson().toJson(jsonFiles);
-            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-            writer.println(jsonData); // đây là gửi thông tin file
-            
+//            System.out.println("json Data duoc gui di laaaaaaaaaaaaaa:"+ jsonData );
+            byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
+            String jsonData1 = new String(jsonDataBytes, StandardCharsets.UTF_8);
+            System.out.println("jsondata duoc gui di laaaaaaaaaaaaaa:" + jsonData1);
+            int dataLength = jsonDataBytes.length;
+            outputStream.writeInt(dataLength);
+            outputStream.write(jsonDataBytes);
+            outputStream.flush();
+//            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+//            writer.println(jsonData); // đây là gửi thông tin file
+//            
             // gui moi file cho client 
 //            for(File file: files) {
 //                sendFileToClient(file);
@@ -346,7 +365,6 @@ public class ConnectionManager {
             for (int i = 0; i < markedFilesArray.size(); i++) {
                 JsonObject fileInfo = markedFilesArray.get(i).getAsJsonObject();
                 String fileName = fileInfo.get("fileName").getAsString();
-                System.out.println(fileName + "namenamenmanenamnanamanananamanenaenemena");
                 String fileMD5 = fileInfo.get("fileMD5").getAsString();
                 String filePath = Paths.get(path, fileName).toString();
 
@@ -365,8 +383,16 @@ public class ConnectionManager {
             jsonFiles.add("files", fileDetailsArray);
 
             String jsonData = new Gson().toJson(jsonFiles);
-            writer.println(jsonData);
-            writer.flush();
+            byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
+//            String jsonData1 = new String(jsonDataBytes, StandardCharsets.UTF_8);
+//System.out.println("jsondata duoc gui di laaaaaaaaaaaaaa:" +jsonData1);
+            int dataLength = jsonDataBytes.length;
+            outputStream.writeInt(dataLength);
+            outputStream.write(jsonDataBytes);
+            outputStream.flush();
+//            writer.println(jsonData);
+//            writer.flush();
+            
             sendMarkedFilesToServer(path, markedFiles);
             // Gửi các file đã được ghi chú lại đến server để nhận từ server
             // sendFilesToServer(reader, writer, markedFiles);
@@ -520,8 +546,20 @@ public class ConnectionManager {
         }
 
         markedFilesInfo.add("markedFiles", markedFilesArray);
+        String jsonData = new Gson().toJson(markedFilesInfo);
+        byte[] jsonDataBytes = jsonData.getBytes(StandardCharsets.UTF_8);
+//            String jsonData1 = new String(jsonDataBytes, StandardCharsets.UTF_8);
+//            System.out.println("jsondata duoc gui di laaaaaaaaaaaaaa:" + jsonData1);
+        int dataLength = jsonDataBytes.length;
+        try {
+            outputStream.writeInt(dataLength);
+            outputStream.write(jsonDataBytes);
+            outputStream.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(ConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        writer.println(new Gson().toJson(markedFilesInfo));
+//            writer.println(new Gson().toJson(markedFilesInfo));
     }
         private void handleReceiveMarkedFilesFromServer(String data) {
         try {
@@ -547,5 +585,6 @@ public class ConnectionManager {
         } catch (Exception e) {
         }
     }
+       
 
 }
