@@ -30,7 +30,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import model.RequestType;
 import model.account;
-import model.machine;
 
 
 
@@ -44,7 +43,6 @@ public class ClientMainForm extends javax.swing.JFrame {
      * Creates new form ClientMainForm
      */
     private account myAccount = new account();
-    private machine myMachine = new machine();
     private String path = "";
 
     
@@ -52,16 +50,8 @@ public class ClientMainForm extends javax.swing.JFrame {
         this.myAccount = myAccount;
     }
 
-    public void setMyMachine(machine myMachine) {
-        this.myMachine = myMachine;
-    }
-
     public account getMyAccount() {
         return myAccount;
-    }
-
-    public machine getMyMachine() {
-        return myMachine;
     }
 
     public ClientMainForm(String path, account myAccount) {

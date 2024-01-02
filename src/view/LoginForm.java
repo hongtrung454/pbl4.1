@@ -6,7 +6,6 @@ package view;
 import com.google.gson.Gson;
 import controller.ConnectionManager;
 import controller.account_controller;
-import controller.machine_controller;
 import java.awt.AWTEventMulticaster;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +22,6 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import model.RequestType;
 import model.account;
-import model.machine;
 
 /**
  *

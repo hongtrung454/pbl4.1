@@ -47,7 +47,6 @@ public class ConnectionManager {
 //    public boolean deviceFingerprint = false;
     public String path = "";
     private ConnectionManager() {
-        // private constructor to prevent instantiation
     }
 
     public static synchronized ConnectionManager getInstance() {
@@ -303,7 +302,7 @@ public class ConnectionManager {
 
         try {
             // Construct the file path
-            String filePath = path + "\\" + fileName;
+            String filePath = path + File.separator + fileName;
 
             // Create a FileOutputStream to save the file
             fileOutputStream = new FileOutputStream(filePath);
@@ -374,10 +373,8 @@ public class ConnectionManager {
                 fileDetails.addProperty("fileSize", file.length());
                 fileDetailsArray.add(fileDetails);
                 markedFiles.put(fileName, fileMD5);
-                System.out.println("testttttttttttttttttttttttttttt000000000");
             }
 
-            System.out.println("testttttttttttttttttttttttttttt");
             jsonFiles.addProperty("requestType", "SEND_MARKED_FILES");
             jsonFiles.addProperty("fileCount", markedFilesArray.size());
             jsonFiles.add("files", fileDetailsArray);
@@ -444,7 +441,7 @@ public class ConnectionManager {
             }
             fileInputStream.close();
 //            fileInputStream.read(fileData);
-//            fileInputStream.close();
+//            fileInputStream.close();  
 //            this.output.write(fileData);
 //            this.output.flush();
         } catch (Exception e) {

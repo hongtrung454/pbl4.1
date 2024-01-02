@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import model.RequestType;
 import model.Sendable;
 import model.account;
-import model.machine;
 
 /**
  *
@@ -17,7 +16,6 @@ import model.machine;
  */
 public class file_request_controller implements Sendable{
     private account user1;
-    private machine machine1;
 
     public file_request_controller(account user1) {
         this.user1 = user1;
@@ -35,13 +33,6 @@ public class file_request_controller implements Sendable{
         this.user1 = user1;
     }
 
-    public machine getMachine1() {
-        return machine1;
-    }
-
-    public void setMachine1(machine machine1) {
-        this.machine1 = machine1;
-    }
     
     @Override
     public String prepareDataToSend() {
